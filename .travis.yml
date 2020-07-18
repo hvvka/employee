@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
 language: java
+jdk:
+  - openjdk11
 
 script:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
