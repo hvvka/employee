@@ -1,5 +1,7 @@
 # EmployeeService
 
+[![Build Status](https://travis-ci.com/hvvka/employee.svg?token=AtJu5RATvaNahLGCYye5&branch=master)](https://travis-ci.com/hvvka/employee)
+
 - [x] employee has a first name
 - [x] employee has a second name
 - [x] employee has an age
@@ -31,8 +33,8 @@ Nice to have:
 - [x] Swagger
 - [] LiquiBase
 - [] cache strategy
-- [] Travis CI
-- [] tests
+- [x] Travis CI
+- [x] tests
 
 ## Documentation
 
@@ -51,6 +53,11 @@ GET localhost:9000/actuator/health
 Build image
 ```bash
 $ docker build -t hvvka/employeeservice . [-f script/Dockerfile]
+```
+
+Pull image
+```bash
+$ docker pull hvvka/employeeservice
 ```
 
 Compose
