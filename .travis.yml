@@ -5,6 +5,6 @@ language: java
 script:
   - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - cd employeeservice
-  - ./gradlew test
+  - sh -c './gradlew test'
   - docker build -t $DOCKER_USERNAME/employeeservice:latest .
   - docker push $DOCKER_USERNAME/employeeservice
