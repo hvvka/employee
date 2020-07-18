@@ -45,9 +45,6 @@ public class Employee implements Serializable {
     @Column(name = "role", nullable = false)
     private Role role;
 
-    /**
-     * pracownik musi zawierać adres (pracownik może mieć wiele adresów np: zamieszkania, zameldowania)
-     */
     @ManyToMany
     @JoinTable(name = "employee_address",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
@@ -139,11 +136,4 @@ public class Employee implements Serializable {
                 '}';
     }
 
-    /*
-    -> pracownik musi zawierać imie
--> pracownik musi zawierać nazwisko
--> pracownik musi zawierać wiek
--> pracownik musi zawierać PESEL
--> pracownik musi zawierać adres (pracownik może mieć wiele adresów np: zamieszkania, zameldowania)
-     */
 }

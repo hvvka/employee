@@ -7,10 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -25,10 +25,23 @@ public class EmployeeRestController {
         this.employeeRepository = employeeRepository;
     }
 
-    @GetMapping("/employee/{firstName}")
-    public ResponseEntity<Employee> getEmployeeByName(@PathVariable String firstName) {
-        LOG.info("GET Employee: {}", firstName);
-        Employee employee = employeeRepository.findByFirstName(firstName);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+    static <X> ResponseEntity<X> wrapOrNotFound(Optional<X> maybeResponse) {
+        return maybeResponse
+                .map(response -> ResponseEntity.ok().body(response))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<Employee> getEmployeeByName(@PathVariable Long id) {
+        LOG.info("GET Employee: {}", id);
+        Optional<Employee> employee = employeeRepository.findById(id);
+        return wrapOrNotFound(employee);
+    }
+
+    @PutMapping("/employees")
+    public ResponseEntity<Employee> updateEmployeeByName(@RequestBody Employee employee) { // fixme: employeeDTO would be nice
+        LOG.info("UPDATE Employee: {}", employee);
+        Employee result = employeeRepository.save(employee);
+        return ResponseEntity.ok().body(result);
     }
 }
