@@ -1,4 +1,4 @@
-package com.github.hvvka.employeeservice.service;
+package com.github.hvvka.employeeservice.service.dto;
 
 import com.github.hvvka.employeeservice.domain.Address;
 import com.github.hvvka.employeeservice.domain.Employee;

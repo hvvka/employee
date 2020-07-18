@@ -1,8 +1,7 @@
 package com.github.hvvka.employeeservice.web;
 
-import com.github.hvvka.employeeservice.repository.EmployeeRepository;
-import com.github.hvvka.employeeservice.service.EmployeeDTO;
 import com.github.hvvka.employeeservice.service.EmployeeService;
+import com.github.hvvka.employeeservice.service.dto.EmployeeDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,15 +16,11 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class EmployeeRestController {
 
-    private final Logger LOG = LoggerFactory.getLogger(EmployeeRestController.class);
-
-    private final EmployeeRepository employeeRepository;
+    private static final Logger LOG = LoggerFactory.getLogger(EmployeeRestController.class);
 
     private final EmployeeService employeeService;
 
-    public EmployeeRestController(EmployeeRepository employeeRepository,
-                                  EmployeeService employeeService) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeRestController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 

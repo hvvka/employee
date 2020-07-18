@@ -3,6 +3,7 @@ package com.github.hvvka.employeeservice.service;
 import com.github.hvvka.employeeservice.domain.Employee;
 import com.github.hvvka.employeeservice.repository.AddressRepository;
 import com.github.hvvka.employeeservice.repository.EmployeeRepository;
+import com.github.hvvka.employeeservice.service.dto.EmployeeDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

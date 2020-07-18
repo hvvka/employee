@@ -12,10 +12,10 @@
 - [x] the system is stateless
 
 - [x] the system has to show the hierarchy for an employee - who is above and below
-- [] the system has to be containerised (the image on public repo)
-- [] the system has to be 'prod ready'
+- [] the system has to be containerised (the image on a public repo)
+- [wtf] the system has to be 'prod ready' 
 - [x] application code has to be on public GIT repository
-- [] the system has to have documentation 
+- [x] the system has to have documentation 
 - [x] the system has to be build upon Spring framework
 
 Bussiness exceptions are thrown when:
@@ -28,8 +28,16 @@ Bussiness exceptions are thrown when:
 Nice to have:
 - [] DB other than H2
 - [] Spring API gateway
-- [] Swagger
+- [x] Swagger
 - [] LiquiBase
 - [] cache strategy
 - [] Travis CI
 - [] tests
+
+## Documentation
+
+http://localhost:9000/v2/api-docs
+
+http://localhost:9000/swagger-resources/
+
+http://localhost:9000/swagger-ui.html
