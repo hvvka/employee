@@ -11,7 +11,7 @@
 - [x] every field can be updated
 - [x] the system is stateless
 
-- [] the system has to show the hierarchy for an employee - who is above and below
+- [x] the system has to show the hierarchy for an employee - who is above and below
 - [] the system has to be containerised (the image on public repo)
 - [] the system has to be 'prod ready'
 - [x] application code has to be on public GIT repository

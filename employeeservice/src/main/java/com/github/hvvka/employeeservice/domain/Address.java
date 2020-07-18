@@ -16,39 +16,10 @@ public class Address implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotNull
-//    @Size(min = 2, max = 2)
-//    @Column(name = "country", length = 2, nullable = false)
-//    private String country;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "address_type", nullable = false)
     private AddressType addressType;
-
-    //    @NotNull
-//    @Size(max = 50)
-//    @Column(name = "city", length = 50, nullable = false)
-//    private String city;
-//
-//    @NotNull
-//    @Size(max = 8)
-//    @Column(name = "postal_code", length = 8, nullable = false)
-//    private String postalCode;
-//
-//    @Size(max = 50)
-//    @Column(name = "street", length = 50)
-//    private String street;
-//
-//    @NotNull
-//    @Size(max = 10)
-//    @Column(name = "house_number", length = 10, nullable = false)
-//    private String houseNumber;
-//
-//    @Size(max = 10)
-//    @Column(name = "apartment_number", length = 10)
-//    private String apartmentNumber;
-
 
     public Long getId() {
         return id;

@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -37,7 +38,7 @@ public class Employee implements Serializable {
     private Integer age;
 
     @Size(min = 11, max = 11)
-    @Column(name = "pesel", length = 11)
+    @Column(name = "pesel", length = 11, unique = true)
     private String pesel;
 
     @NotNull
@@ -49,7 +50,10 @@ public class Employee implements Serializable {
     @JoinTable(name = "employee_address",
             joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
-    private Set<Address> address = new HashSet<>();
+    private Set<Address> addresses = new HashSet<>();
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    private Employee employeeAbove;
 
     public Long getId() {
         return id;
@@ -99,12 +103,20 @@ public class Employee implements Serializable {
         this.role = role;
     }
 
-    public Set<Address> getAddress() {
-        return address;
+    public Set<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(Set<Address> address) {
-        this.address = address;
+    public void setAddresses(Set<Address> address) {
+        this.addresses = address;
+    }
+
+    public Optional<Employee> getEmployeeAbove() {
+        return employeeAbove == null ? Optional.empty() : Optional.of(employeeAbove);
+    }
+
+    public void setEmployeeAbove(Employee employeeAbove) {
+        this.employeeAbove = employeeAbove;
     }
 
     @Override
@@ -132,7 +144,8 @@ public class Employee implements Serializable {
                 ", age=" + age +
                 ", pesel='" + pesel + '\'' +
                 ", role=" + role +
-                ", address=" + address +
+                ", address=" + addresses +
+                ", employeeAbove=" + employeeAbove +
                 '}';
     }
 
