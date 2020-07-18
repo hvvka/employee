@@ -52,7 +52,7 @@ public class Employee implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"))
     private Set<Address> addresses = new HashSet<>();
 
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @ManyToOne
     private Employee employeeAbove;
 
     public Long getId() {

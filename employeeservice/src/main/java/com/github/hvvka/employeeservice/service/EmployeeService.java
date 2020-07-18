@@ -43,7 +43,9 @@ public class EmployeeService {
                     e.setRole(employeeDTO.getRole());
                     e.setPesel(employeeDTO.getPesel());
                     e.setAddresses(new HashSet<>(addressRepository.findAllById(employeeDTO.getAddresses())));
-                    e.setEmployeeAbove(employeeRepository.findById(employeeDTO.getEmployeeAboveId()).orElse(null));
+                    if (employeeDTO.getOptionalEmployeeAboveId().isPresent()) {
+                        e.setEmployeeAbove(employeeRepository.findById(employeeDTO.getOptionalEmployeeAboveId().get()).orElse(null));
+                    }
                     return e;
                 })
                 .map(EmployeeDTO::new)

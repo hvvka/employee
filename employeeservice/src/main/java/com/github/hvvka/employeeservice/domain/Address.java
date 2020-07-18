@@ -29,12 +29,22 @@ public class Address implements Serializable {
         this.id = id;
     }
 
+    public Address id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public AddressType getAddressType() {
         return addressType;
     }
 
     public void setAddressType(AddressType addressType) {
         this.addressType = addressType;
+    }
+
+    public Address addressType(AddressType addressType) {
+        this.addressType = addressType;
+        return this;
     }
 
     @Override

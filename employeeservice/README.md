@@ -41,3 +41,19 @@ http://localhost:9000/v2/api-docs
 http://localhost:9000/swagger-resources/
 
 http://localhost:9000/swagger-ui.html
+
+## Healthcheck
+
+GET localhost:9000/actuator/health
+
+## Docker
+
+Build image
+```bash
+$ docker build -t hvvka/employeeservice . [-f script/Dockerfile]
+```
+
+Compose
+```bash
+$ docker-compose up -d
+```

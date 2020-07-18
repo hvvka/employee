@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -111,6 +112,10 @@ public class EmployeeDTO {
 
     public void setAddresses(Set<Long> addresses) {
         this.addresses = addresses;
+    }
+
+    public Optional<Long> getOptionalEmployeeAboveId() {
+        return employeeAboveId == null ? Optional.empty() : Optional.of(employeeAboveId);
     }
 
     public Long getEmployeeAboveId() {

@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+    employeeservice:
+        image: hvvka/employeeservice
+        container_name: employeeservice
+        ports:
+            - "9000:9000"
+        
