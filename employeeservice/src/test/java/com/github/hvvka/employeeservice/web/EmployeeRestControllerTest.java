@@ -75,10 +75,11 @@ class EmployeeRestControllerTest {
                 .andExpect(jsonPath("$.role").value("CEO"))
                 .andExpect(jsonPath("$.addresses.[0]").value(1))
                 .andExpect(jsonPath("$.employeeAboveId").value(IsNull.nullValue()))
-                .andExpect(jsonPath("$.employeeBelowIds").isEmpty());
+                .andExpect(jsonPath("$.employeeBelowIds").value(2));
     }
 
     @Test
+    @Transactional
     void updateEmployee() throws Exception {
         // given
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();

@@ -2,39 +2,39 @@
 
 [![Build Status](https://travis-ci.com/hvvka/employee.svg?token=AtJu5RATvaNahLGCYye5&branch=master)](https://travis-ci.com/hvvka/employee)
 
-- [x] employee has a first name
-- [x] employee has a second name
-- [x] employee has an age
-- [x] employee has PESEL
-- [x] employee can have many addresses
-- [x] employee has a role
+-[x] employee has a first name
+-[x] employee has a second name
+-[x] employee has an age
+-[x] employee has PESEL
+-[x] employee can have many addresses
+-[x] employee has a role
 
-- [x] fields are validated (firstName, lastName, age, PESEL, address)
-- [x] every field can be updated
-- [x] the system is stateless
+-[x] fields are validated (firstName, lastName, age, PESEL, address)
+-[x] every field can be updated
+-[x] the system is stateless
 
-- [x] the system has to show the hierarchy for an employee - who is above and below
-- [] the system has to be containerised (the image on a public repo)
-- [wtf] the system has to be 'prod ready' 
-- [x] application code has to be on public GIT repository
-- [x] the system has to have documentation 
-- [x] the system has to be build upon Spring framework
+-[x] the system has to show the hierarchy for an employee - who is above and below
+-[] the system has to be containerised (the image on a public repo)
+-[wtf] the system has to be 'prod ready' 
+-[x] application code has to be on public GIT repository
+-[x] the system has to have documentation 
+-[x] the system has to be build upon Spring framework
 
-Bussiness exceptions are thrown when:
-- [] the user with the same PESEL already exists
-- [] the manager manages >5 employees
-- [] >5 directors exist
+Business exceptions are thrown when:
+-[] the user with the same PESEL already exists
+-[] the manager manages >5 employees
+-[] >5 directors exist
 
 --- 
 
 Nice to have:
-- [] DB other than H2
-- [] Spring API gateway
-- [x] Swagger
-- [] LiquiBase
-- [] cache strategy
-- [x] Travis CI
-- [x] tests
+-[] DB other than H2
+-[] Spring API gateway
+-[x] Swagger
+-[] LiquiBase
+-[] cache strategy
+-[x] Travis CI
+-[x] tests
 
 ## Documentation
 
