@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    show-sql: true
+    database: H2
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:xd
+    driverClassName: org.h2.Driver
+    username: xd
+    password:
+server:
+  port: 9000
