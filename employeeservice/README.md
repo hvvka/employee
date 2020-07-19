@@ -1,7 +1,5 @@
 # EmployeeService
 
-[![Build Status](https://travis-ci.com/hvvka/employee.svg?token=AtJu5RATvaNahLGCYye5&branch=master)](https://travis-ci.com/hvvka/employee)
-
 - [x] employee has a first name
 - [x] employee has a second name
 - [x] employee has an age
@@ -21,7 +19,7 @@
 - [x] the system has to be build upon Spring framework
 
 Business exceptions are thrown when:
-- [] the user with the same PESEL already exists
+- [x] the user with the same PESEL already exists
 - [x] the manager manages \>5 employees 
 - [x] \>5 directors exist
 

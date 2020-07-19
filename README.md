@@ -1,11 +1,13 @@
 # employee
 
+[![Build Status](https://travis-ci.com/hvvka/employee.svg?token=AtJu5RATvaNahLGCYye5&branch=master)](https://travis-ci.com/hvvka/employee)
+
 Compose
 ```bash
 $ docker-compose up --scale employeeservice=2 -d
 ```
 
-Only DB (for dev)
+Just DB (for dev)
 ```bash
 $ docker-compose -f mysql.yml up
 ```

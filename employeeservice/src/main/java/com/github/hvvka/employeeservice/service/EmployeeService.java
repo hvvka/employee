@@ -44,6 +44,8 @@ public class EmployeeService {
                         throw new TooManyEmployeesForManagerException();
                     } else if (isTooManyDirectors(employeeDTO)) {
                         throw new TooManyDirectorsException();
+                    } else if (employeeRepository.existsByPesel(employeeDTO.getPesel())) {
+                        throw new PeselAlreadyPresentException();
                     }
                     return employee;
                 })

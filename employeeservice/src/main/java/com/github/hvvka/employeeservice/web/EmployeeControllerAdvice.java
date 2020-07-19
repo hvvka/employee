@@ -1,5 +1,7 @@
 package com.github.hvvka.employeeservice.web;
 
+import com.github.hvvka.employeeservice.service.PeselAlreadyPresentException;
+import com.github.hvvka.employeeservice.service.TooManyDirectorsException;
 import com.github.hvvka.employeeservice.service.TooManyEmployeesForManagerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,22 @@ public class EmployeeControllerAdvice {
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     @ExceptionHandler({TooManyEmployeesForManagerException.class})
     public void handle(TooManyEmployeesForManagerException e) {
+        postExceptionToErrorService(e);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ExceptionHandler({TooManyDirectorsException.class})
+    public void handle(TooManyDirectorsException e) {
+        postExceptionToErrorService(e);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({PeselAlreadyPresentException.class})
+    public void handle(PeselAlreadyPresentException e) {
+        postExceptionToErrorService(e);
+    }
+
+    private void postExceptionToErrorService(RuntimeException e) {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(errorsServiceUrl, e, String.class);
         LOG.info("{}", result);

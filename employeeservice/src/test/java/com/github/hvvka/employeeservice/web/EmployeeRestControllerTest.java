@@ -143,4 +143,24 @@ class EmployeeRestControllerTest {
         Employee testEmployee = employees.get(5);
         assertThat(testEmployee.getRole()).isEqualTo(Role.CEO);
     }
+
+    @Test
+    @Transactional
+    public void updateEmployeePeselToAlreadyExistingOne() throws Exception {
+        // given
+        Optional<Employee> employee = employeeRepository.findById(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
+        employeeDTO.setPesel("20051812345");
+
+        // when
+        restUserMockMvc.perform(put("/api/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isForbidden());
+
+        // then
+        List<Employee> employees = employeeRepository.findAll();
+        Employee testEmployee = employees.get(5);
+        assertThat(testEmployee.getPesel()).isEqualTo("93020512345");
+    }
 }
