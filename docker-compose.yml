@@ -6,4 +6,8 @@ services:
         container_name: employeeservice
         ports:
             - "9000:9000"
-        
+     errorservice:
+        image: hvvka/errorservice
+        container_name: errorservice
+        ports:
+            - "8080:8080"

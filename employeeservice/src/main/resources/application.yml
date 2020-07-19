@@ -12,3 +12,6 @@ spring:
     password:
 server:
   port: 9000
+
+errorservice:
+  url: http://localhost:8080/api/exception

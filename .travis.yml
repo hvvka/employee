@@ -10,7 +10,7 @@ script:
   - sh -c './gradlew test'
   - docker build -t $DOCKER_USERNAME/employeeservice:latest .
   - docker push $DOCKER_USERNAME/employeeservice
-  - cd errorservice
+  - cd ../errorservice
   - sh -c './gradlew test'
   - docker build -t $DOCKER_USERNAME/errorservice:latest .
   - docker push $DOCKER_USERNAME/errorservice
