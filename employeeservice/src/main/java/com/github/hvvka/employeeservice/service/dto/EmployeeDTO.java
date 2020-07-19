@@ -36,9 +36,9 @@ public class EmployeeDTO {
 
     private Set<Long> addresses;
 
-    private Long employeeAboveId;
+    private Long supervisorId;
 
-    private Set<Long> employeeBelowIds = new HashSet<>();
+    private Set<Long> subordinateIds = new HashSet<>();
 
     public EmployeeDTO() {
         // for Jackson
@@ -54,10 +54,10 @@ public class EmployeeDTO {
         this.addresses = employee.getAddresses().stream()
                 .map(Address::getId)
                 .collect(Collectors.toSet());
-        if (employee.getEmployeeAbove().isPresent()) {
-            this.employeeAboveId = employee.getEmployeeAbove().get().getId();
+        if (employee.getSupervisor().isPresent()) {
+            this.supervisorId = employee.getSupervisor().get().getId();
         }
-        this.setEmployeeBelowIds(employee.getEmployeesBelow().stream()
+        this.setSubordinateIds(employee.getSubordinates().stream()
                 .map(Employee::getId)
                 .collect(Collectors.toSet()));
     }
@@ -119,24 +119,24 @@ public class EmployeeDTO {
     }
 
     @JsonIgnore
-    public Optional<Long> getOptionalEmployeeAboveId() {
-        return employeeAboveId == null ? Optional.empty() : Optional.of(employeeAboveId);
+    public Optional<Long> getOptionalSupervisorId() {
+        return supervisorId == null ? Optional.empty() : Optional.of(supervisorId);
     }
 
-    public Long getEmployeeAboveId() {
-        return employeeAboveId;
+    public Long getSupervisorId() {
+        return supervisorId;
     }
 
-    public void setEmployeeAboveId(Long employeeAboveId) {
-        this.employeeAboveId = employeeAboveId;
+    public void setSupervisorId(Long supervisorId) {
+        this.supervisorId = supervisorId;
     }
 
-    public Set<Long> getEmployeeBelowIds() {
-        return employeeBelowIds;
+    public Set<Long> getSubordinateIds() {
+        return subordinateIds;
     }
 
-    public void setEmployeeBelowIds(Set<Long> employeeBelowIds) {
-        this.employeeBelowIds = employeeBelowIds;
+    public void setSubordinateIds(Set<Long> subordinateIds) {
+        this.subordinateIds = subordinateIds;
     }
 
     @Override
@@ -149,8 +149,8 @@ public class EmployeeDTO {
                 ", pesel='" + pesel + '\'' +
                 ", role=" + role +
                 ", addresses=" + addresses +
-                ", employeeAboveId=" + employeeAboveId +
-                ", employeeBelowIds=" + employeeBelowIds +
+                ", supervisorId=" + supervisorId +
+                ", subordinateIds=" + subordinateIds +
                 '}';
     }
 }

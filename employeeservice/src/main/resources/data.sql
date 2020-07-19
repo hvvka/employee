@@ -1,7 +1,7 @@
 insert into address(address_type)
 values('HOME'),('BUSINESS'),('BILLING'),('SHIPPING');
 
-insert into employee(first_name,last_name,age,pesel,role,employee_above_id)
+insert into employee(first_name,last_name,age,pesel,role,supervisor_id)
 values
 ('Lukasz','Stanislawowski',41,'79072512345','DIRECTOR',null),
 ('Zbigniew','Stonoga',45,'74101712345','DIRECTOR',1),

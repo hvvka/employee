@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,10 +54,10 @@ public class Employee implements Serializable {
     private Set<Address> addresses = new HashSet<>();
 
     @ManyToOne
-    private Employee employeeAbove;
+    private Employee supervisor;
 
-    @OneToMany(mappedBy = "employeeAbove", fetch = FetchType.LAZY)
-    private Set<Employee> employeesBelow = new HashSet<>(); // fixme: can be Set<Long> employeeIdsBelow
+    @OneToMany(mappedBy = "supervisor", fetch = FetchType.LAZY)
+    private Set<Employee> subordinates = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -114,20 +115,20 @@ public class Employee implements Serializable {
         this.addresses = address;
     }
 
-    public Optional<Employee> getEmployeeAbove() {
-        return employeeAbove == null ? Optional.empty() : Optional.of(employeeAbove);
+    public Optional<Employee> getSupervisor() {
+        return supervisor == null ? Optional.empty() : Optional.of(supervisor);
     }
 
-    public void setEmployeeAbove(Employee employeeAbove) {
-        this.employeeAbove = employeeAbove;
+    public void setSupervisor(Employee supervisor) {
+        this.supervisor = supervisor;
     }
 
-    public Set<Employee> getEmployeesBelow() {
-        return employeesBelow;
+    public Set<Employee> getSubordinates() {
+        return subordinates;
     }
 
-    public void setEmployeesBelow(Set<Employee> employeesBelow) {
-        this.employeesBelow = employeesBelow;
+    public void setSubordinates(Set<Employee> subordinates) {
+        this.subordinates = subordinates;
     }
 
     @Override
@@ -143,7 +144,7 @@ public class Employee implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        return Objects.hash(id, firstName, lastName, age, pesel, role, addresses, supervisor);
     }
 
     @Override
@@ -156,8 +157,8 @@ public class Employee implements Serializable {
                 ", pesel='" + pesel + '\'' +
                 ", role=" + role +
                 ", addresses=" + addresses +
-                ", employeeAbove=" + employeeAbove +
-                ", employeesBelow=" + employeesBelow.stream()
+                ", supervisor=" + supervisor +
+                ", subordinates=" + subordinates.stream()
                 .map(Employee::getId)
                 .collect(Collectors.toSet()) +
                 '}';

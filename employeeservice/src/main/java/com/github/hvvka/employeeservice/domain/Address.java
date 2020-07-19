@@ -5,6 +5,7 @@ import com.github.hvvka.employeeservice.domain.enumeration.AddressType;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "address")
@@ -48,11 +49,6 @@ public class Address implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return 31;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -61,6 +57,11 @@ public class Address implements Serializable {
             return false;
         }
         return id != null && id.equals(((Address) o).id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, addressType);
     }
 
     @Override

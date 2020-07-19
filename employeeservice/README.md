@@ -11,9 +11,9 @@
 - [x] every field can be updated
 - [x] the system is stateless
 
-- [x] the system has to show the hierarchy for an employee - who is above and below
+- [x] the system has to show the hierarchy for an employee - who is a supervisor and subordinate
 - [x] the system has to be containerised (the image on a public repo)
-- [wtf] the system has to be 'prod ready' 
+- [x] the system has to be 'prod ready' 
 - [x] application code has to be on public GIT repository
 - [x] the system has to have documentation 
 - [x] the system has to be build upon Spring framework
@@ -34,6 +34,7 @@ Nice to have:
 - [x] Travis CI
 - [x] tests
 - [] have H2 in-memory with dev profile / H2 file-based for prod
+- [] Lombok
 
 ## Documentation
 

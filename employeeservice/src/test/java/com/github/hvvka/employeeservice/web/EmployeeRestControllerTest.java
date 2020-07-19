@@ -57,7 +57,7 @@ class EmployeeRestControllerTest {
         this.employee.setAddresses(Set.of(
                 new Address().id(1L).addressType(AddressType.HOME)
         ));
-        this.employee.setEmployeeAbove(null);
+        this.employee.setSupervisor(null);
     }
 
     @Test
@@ -77,8 +77,8 @@ class EmployeeRestControllerTest {
                 .andExpect(jsonPath("$.pesel").value("80111212345"))
                 .andExpect(jsonPath("$.role").value("DIRECTOR"))
                 .andExpect(jsonPath("$.addresses.[0]").value(1))
-                .andExpect(jsonPath("$.employeeAboveId").value(IsNull.nullValue()))
-                .andExpect(jsonPath("$.employeeBelowIds").value(2));
+                .andExpect(jsonPath("$.supervisorId").value(IsNull.nullValue()))
+                .andExpect(jsonPath("$.subordinateIds").value(2));
     }
 
     @Test
@@ -116,7 +116,7 @@ class EmployeeRestControllerTest {
         restUserMockMvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isIAmATeapot());
+                .andExpect(status().isBadRequest());
 
         // then
         List<Employee> employees = employeeRepository.findAll();
@@ -136,7 +136,7 @@ class EmployeeRestControllerTest {
         restUserMockMvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isBadRequest());
 
         // then
         List<Employee> employees = employeeRepository.findAll();
@@ -156,7 +156,7 @@ class EmployeeRestControllerTest {
         restUserMockMvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isBadRequest());
 
         // then
         List<Employee> employees = employeeRepository.findAll();

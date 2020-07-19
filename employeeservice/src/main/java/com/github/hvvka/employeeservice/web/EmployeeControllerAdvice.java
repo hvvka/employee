@@ -1,8 +1,8 @@
 package com.github.hvvka.employeeservice.web;
 
-import com.github.hvvka.employeeservice.service.PeselAlreadyPresentException;
-import com.github.hvvka.employeeservice.service.TooManyDirectorsException;
-import com.github.hvvka.employeeservice.service.TooManyEmployeesForManagerException;
+import com.github.hvvka.employeeservice.service.error.PeselAlreadyPresentException;
+import com.github.hvvka.employeeservice.service.error.TooManyDirectorsException;
+import com.github.hvvka.employeeservice.service.error.TooManyEmployeesForManagerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,19 +20,19 @@ public class EmployeeControllerAdvice {
     @Value("${errorservice.url}")
     private String errorsServiceUrl;
 
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({TooManyEmployeesForManagerException.class})
     public void handle(TooManyEmployeesForManagerException e) {
         postExceptionToErrorService(e);
     }
 
-    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({TooManyDirectorsException.class})
     public void handle(TooManyDirectorsException e) {
         postExceptionToErrorService(e);
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({PeselAlreadyPresentException.class})
     public void handle(PeselAlreadyPresentException e) {
         postExceptionToErrorService(e);
