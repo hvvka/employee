@@ -1,5 +1,6 @@
 package com.github.hvvka.employeeservice.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.hvvka.employeeservice.domain.Address;
 import com.github.hvvka.employeeservice.domain.Employee;
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
@@ -117,6 +118,7 @@ public class EmployeeDTO {
         this.addresses = addresses;
     }
 
+    @JsonIgnore
     public Optional<Long> getOptionalEmployeeAboveId() {
         return employeeAboveId == null ? Optional.empty() : Optional.of(employeeAboveId);
     }

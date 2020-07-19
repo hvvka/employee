@@ -14,7 +14,7 @@
 - [x] the system is stateless
 
 - [x] the system has to show the hierarchy for an employee - who is above and below
-- [] the system has to be containerised (the image on a public repo)
+- [x] the system has to be containerised (the image on a public repo)
 - [wtf] the system has to be 'prod ready' 
 - [x] application code has to be on public GIT repository
 - [x] the system has to have documentation 
@@ -22,7 +22,7 @@
 
 Business exceptions are thrown when:
 - [] the user with the same PESEL already exists
-- [] the manager manages >5 employees
+- [x] the manager manages >5 employees 
 - [] >5 directors exist
 
 --- 

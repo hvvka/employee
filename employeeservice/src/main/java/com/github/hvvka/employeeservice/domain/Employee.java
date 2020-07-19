@@ -55,7 +55,7 @@ public class Employee implements Serializable {
     @ManyToOne
     private Employee employeeAbove;
 
-    @OneToMany(mappedBy = "employeeAbove")
+    @OneToMany(mappedBy = "employeeAbove", fetch = FetchType.LAZY)
     private Set<Employee> employeesBelow = new HashSet<>();
 
     public Long getId() {
