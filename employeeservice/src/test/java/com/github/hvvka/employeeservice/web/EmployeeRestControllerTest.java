@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +41,8 @@ class EmployeeRestControllerTest {
 
     private Employee employee;
 
+    private final ObjectMapper mapper = new ObjectMapper();
+
     @BeforeEach
     public void setup() {
         EmployeeRestController employeeRestController = new EmployeeRestController(employeeService);
@@ -50,7 +53,7 @@ class EmployeeRestControllerTest {
         this.employee.setLastName("Gosling");
         this.employee.setAge(39);
         this.employee.setPesel("80111212345");
-        this.employee.setRole(Role.CEO);
+        this.employee.setRole(Role.DIRECTOR);
         this.employee.setAddresses(Set.of(
                 new Address().id(1L).addressType(AddressType.HOME)
         ));
@@ -72,7 +75,7 @@ class EmployeeRestControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Gosling"))
                 .andExpect(jsonPath("$.age").value(39))
                 .andExpect(jsonPath("$.pesel").value("80111212345"))
-                .andExpect(jsonPath("$.role").value("CEO"))
+                .andExpect(jsonPath("$.role").value("DIRECTOR"))
                 .andExpect(jsonPath("$.addresses.[0]").value(1))
                 .andExpect(jsonPath("$.employeeAboveId").value(IsNull.nullValue()))
                 .andExpect(jsonPath("$.employeeBelowIds").value(2));
@@ -83,7 +86,6 @@ class EmployeeRestControllerTest {
     void updateEmployee() throws Exception {
         // given
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
-        ObjectMapper mapper = new ObjectMapper();
         EmployeeDTO employeeDTO = new EmployeeDTO(employee);
         employeeDTO.setFirstName("XD");
         employeeDTO.setLastName("!!");
@@ -100,5 +102,25 @@ class EmployeeRestControllerTest {
         Employee testEmployee = employees.get(0);
         assertThat(testEmployee.getFirstName()).isEqualTo("XD");
         assertThat(testEmployee.getLastName()).isEqualTo("!!");
+    }
+
+    @Test
+    @Transactional
+    public void updateManagerOfOverFiveEmployees() throws Exception {
+        // given
+        Optional<Employee> employee = employeeRepository.findById(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
+        employeeDTO.setRole(Role.EMPLOYEE);
+
+        // when
+        restUserMockMvc.perform(put("/api/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isIAmATeapot());
+
+        // then
+        List<Employee> employees = employeeRepository.findAll();
+        Employee testEmployee = employees.get(5);
+        assertThat(testEmployee.getRole()).isEqualTo(Role.CEO);
     }
 }
