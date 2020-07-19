@@ -22,13 +22,13 @@
 
 Business exceptions are thrown when:
 - [] the user with the same PESEL already exists
-- [x] the manager manages >5 employees 
-- [] >5 directors exist
+- [x] the manager manages \>5 employees 
+- [x] \>5 directors exist
 
 --- 
 
 Nice to have:
-- [] DB other than H2
+- [x] DB other than H2
 - [] Spring API gateway
 - [x] Swagger
 - [] LiquiBase

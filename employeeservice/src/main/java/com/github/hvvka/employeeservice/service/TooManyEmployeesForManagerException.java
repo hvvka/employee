@@ -6,11 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
 public class TooManyEmployeesForManagerException extends RuntimeException {
 
-    public TooManyEmployeesForManagerException(String message) {
-        super(message);
-    }
-
     public TooManyEmployeesForManagerException() {
-        super("Too many employees for this manager!");
+        super("Too many employees for the manager!");
     }
 }

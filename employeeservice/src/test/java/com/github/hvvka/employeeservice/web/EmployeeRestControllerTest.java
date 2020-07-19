@@ -106,7 +106,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    public void updateManagerOfOverFiveEmployees() throws Exception {
+    public void updateCeoToEmployeeToExceedMaxCountOfEmployeesForTheManager() throws Exception {
         // given
         Optional<Employee> employee = employeeRepository.findById(6L);
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
@@ -117,6 +117,26 @@ class EmployeeRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isIAmATeapot());
+
+        // then
+        List<Employee> employees = employeeRepository.findAll();
+        Employee testEmployee = employees.get(5);
+        assertThat(testEmployee.getRole()).isEqualTo(Role.CEO);
+    }
+
+    @Test
+    @Transactional
+    public void updateCeoToDirectorToExceedTheirMaxCount() throws Exception {
+        // given
+        Optional<Employee> employee = employeeRepository.findById(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
+        employeeDTO.setRole(Role.DIRECTOR);
+
+        // when
+        restUserMockMvc.perform(put("/api/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isNotAcceptable());
 
         // then
         List<Employee> employees = employeeRepository.findAll();

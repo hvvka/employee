@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +42,8 @@ public class EmployeeService {
                     if (hasEmployeeUpdatedToManagerTooManyEmployees(employee, employeeDTO.getRole(), 5)
                             || hasManagerOfUpdatedEmployeeTooManyEmployees(employeeDTO)) {
                         throw new TooManyEmployeesForManagerException();
+                    } else if (isTooManyDirectors(employeeDTO)) {
+                        throw new TooManyDirectorsException();
                     }
                     return employee;
                 })
@@ -59,14 +63,22 @@ public class EmployeeService {
     }
 
     private boolean hasManagerOfUpdatedEmployeeTooManyEmployees(EmployeeDTO employeeDTO) {
-        return employeeDTO.getRole() == Role.EMPLOYEE &&
-                employeeRepository.findById(employeeDTO.getEmployeeAboveId())
-                        .filter(e -> hasEmployeeUpdatedToManagerTooManyEmployees(e, e.getRole(), 4))
-                        .isPresent();
+        return employeeDTO.getRole() == Role.EMPLOYEE
+                && employeeRepository.findById(employeeDTO.getEmployeeAboveId())
+                .filter(e -> hasEmployeeUpdatedToManagerTooManyEmployees(e, e.getRole(), 4))
+                .isPresent();
     }
 
     private boolean hasEmployeeUpdatedToManagerTooManyEmployees(Employee employee, Role role, int maxEmployees) {
-        return role == Role.MANAGER &&
-                employee.getEmployeesBelow().size() > maxEmployees;
+        return role == Role.MANAGER && employee.getEmployeesBelow().size() > maxEmployees;
+    }
+
+    private boolean isTooManyDirectors(EmployeeDTO employeeDTO) {
+        Set<Long> directorIds = employeeRepository.findAllByRoleIs(Role.DIRECTOR).stream()
+                .map(Employee::getId)
+                .collect(Collectors.toSet());
+        return employeeDTO.getRole() == Role.DIRECTOR
+                && !directorIds.contains(employeeDTO.getId())
+                && directorIds.size() > 4;
     }
 }
