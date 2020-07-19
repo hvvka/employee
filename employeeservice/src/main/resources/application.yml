@@ -9,12 +9,13 @@ spring:
     console:
       enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3306/xd?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://mysql:3306/xd?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     initialization-mode: always
+    continue-on-error: true
 server:
   port: 9000
 
 errorservice:
-  url: http://localhost:8080/api/exception
+  url: http://errorservice:8080/api/exception
