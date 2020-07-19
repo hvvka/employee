@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,11 +28,7 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public Optional<EmployeeDTO> getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .map(EmployeeDTO::new)
-                .map(e -> {
-                    e.setEmployeeBelowIds(getEmployeeIdsBelow(id));
-                    return e;
-                });
+                .map(EmployeeDTO::new);
     }
 
     public Optional<EmployeeDTO> updateEmployee(EmployeeDTO employeeDTO) {
@@ -42,7 +36,7 @@ public class EmployeeService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(employee -> {
-                    // TODO: needs refactor on so many levels
+                    // todo: move the rule to domain or dto / use hibernate validator
                     if (hasEmployeeUpdatedToManagerTooManyEmployees(employee, employeeDTO.getRole(), 5)
                             || hasManagerOfUpdatedEmployeeTooManyEmployees(employeeDTO)) {
                         throw new TooManyEmployeesForManagerException();
@@ -61,11 +55,7 @@ public class EmployeeService {
                     }
                     return e;
                 })
-                .map(EmployeeDTO::new)
-                .map(e -> {
-                    e.setEmployeeBelowIds(getEmployeeIdsBelow(employeeDTO.getId()));
-                    return e;
-                });
+                .map(EmployeeDTO::new);
     }
 
     private boolean hasManagerOfUpdatedEmployeeTooManyEmployees(EmployeeDTO employeeDTO) {
@@ -77,12 +67,6 @@ public class EmployeeService {
 
     private boolean hasEmployeeUpdatedToManagerTooManyEmployees(Employee employee, Role role, int maxEmployees) {
         return role == Role.MANAGER &&
-                getEmployeeIdsBelow(employee.getId()).size() > maxEmployees;
-    }
-
-    private Set<Long> getEmployeeIdsBelow(Long id) {
-        return employeeRepository.findAllByEmployeeAbove_Id(id).stream()
-                .map(Employee::getId)
-                .collect(Collectors.toSet());
+                employee.getEmployeesBelow().size() > maxEmployees;
     }
 }

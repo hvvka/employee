@@ -11,10 +11,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "employee")
-//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -54,6 +54,9 @@ public class Employee implements Serializable {
 
     @ManyToOne
     private Employee employeeAbove;
+
+    @OneToMany(mappedBy = "employeeAbove")
+    private Set<Employee> employeesBelow = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -119,6 +122,14 @@ public class Employee implements Serializable {
         this.employeeAbove = employeeAbove;
     }
 
+    public Set<Employee> getEmployeesBelow() {
+        return employeesBelow;
+    }
+
+    public void setEmployeesBelow(Set<Employee> employeesBelow) {
+        this.employeesBelow = employeesBelow;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -144,9 +155,11 @@ public class Employee implements Serializable {
                 ", age=" + age +
                 ", pesel='" + pesel + '\'' +
                 ", role=" + role +
-                ", address=" + addresses +
+                ", addresses=" + addresses +
                 ", employeeAbove=" + employeeAbove +
+                ", employeesBelow=" + employeesBelow.stream()
+                .map(Employee::getId)
+                .collect(Collectors.toSet()) +
                 '}';
     }
-
 }

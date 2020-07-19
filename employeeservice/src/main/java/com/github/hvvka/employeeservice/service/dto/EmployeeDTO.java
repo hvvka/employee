@@ -56,6 +56,9 @@ public class EmployeeDTO {
         if (employee.getEmployeeAbove().isPresent()) {
             this.employeeAboveId = employee.getEmployeeAbove().get().getId();
         }
+        this.setEmployeeBelowIds(employee.getEmployeesBelow().stream()
+                .map(Employee::getId)
+                .collect(Collectors.toSet()));
     }
 
     public Long getId() {
