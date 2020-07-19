@@ -35,6 +35,7 @@ Nice to have:
 - [] cache strategy
 - [x] Travis CI
 - [x] tests
+- [] have H2 in-memory with dev profile / H2 file-based for prod
 
 ## Documentation
 
@@ -52,15 +53,10 @@ GET localhost:9000/actuator/health
 
 Build image
 ```bash
-$ docker build -t hvvka/employeeservice . [-f script/Dockerfile]
+$ docker build -t hvvka/employeeservice .
 ```
 
 Pull image
 ```bash
 $ docker pull hvvka/employeeservice
-```
-
-Compose
-```bash
-$ docker-compose up -d
 ```
