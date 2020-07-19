@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(classes = EmployeeserviceApplication.class)
-class EmployeeRestControllerTest {
+class EmployeeRestControllerIT {
 
     @Autowired
     private EmployeeService employeeService;
@@ -62,7 +62,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    void getEmployee() throws Exception {
+    void shouldGetEmployee() throws Exception {
         // setup
         employeeRepository.saveAndFlush(employee);
 
@@ -83,7 +83,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    void updateEmployee() throws Exception {
+    void shouldReturnOkWhenUpdateEmployee() throws Exception {
         // given
         int databaseSizeBeforeUpdate = employeeRepository.findAll().size();
         EmployeeDTO employeeDTO = new EmployeeDTO(employee);
@@ -106,7 +106,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    public void updateCeoToEmployeeToExceedMaxCountOfEmployeesForTheManager() throws Exception {
+    public void shouldReturnBadRequestWhenExceedsMaxSubordinatesForManager() throws Exception {
         // given
         Optional<Employee> employee = employeeRepository.findById(6L);
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
@@ -126,7 +126,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    public void updateCeoToDirectorToExceedTheirMaxCount() throws Exception {
+    public void shouldReturnBadRequestWhenExceedsMaxDirectors() throws Exception {
         // given
         Optional<Employee> employee = employeeRepository.findById(6L);
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
@@ -146,7 +146,7 @@ class EmployeeRestControllerTest {
 
     @Test
     @Transactional
-    public void updateEmployeePeselToAlreadyExistingOne() throws Exception {
+    public void shouldReturnBadRequestWhenPeselAlreadyExists() throws Exception {
         // given
         Optional<Employee> employee = employeeRepository.findById(6L);
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());

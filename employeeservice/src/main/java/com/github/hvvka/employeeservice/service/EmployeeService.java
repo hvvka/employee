@@ -45,8 +45,7 @@ public class EmployeeService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(employee -> {
-                    if (hasEmployeeUpdatedToManagerTooManySubordinates(employee, employeeDTO.getRole())
-                            || hasManagerOfUpdatedSubordinateTooManySubordinates(employeeDTO)) {
+                    if (hasSupervisorTooManySubordinates(employee, employeeDTO.getRole())) {
                         throw new TooManyEmployeesForManagerException(MAX_MANAGER_SUBORDINATES);
                     } else if (areThereTooManyDirectors(employeeDTO)) {
                         throw new TooManyDirectorsException(MAX_DIRECTORS);
@@ -70,16 +69,7 @@ public class EmployeeService {
                 .map(EmployeeDTO::new);
     }
 
-    private boolean hasManagerOfUpdatedSubordinateTooManySubordinates(EmployeeDTO employeeDTO) {
-        if (employeeDTO.getOptionalSupervisorId().isPresent()) {
-            return employeeRepository.findById(employeeDTO.getOptionalSupervisorId().get())
-                    .filter(e -> hasEmployeeUpdatedToManagerTooManySubordinates(e, e.getRole()))
-                    .isPresent();
-        }
-        return false;
-    }
-
-    private boolean hasEmployeeUpdatedToManagerTooManySubordinates(Employee employee, Role role) {
+    private boolean hasSupervisorTooManySubordinates(Employee employee, Role role) {
         return role == Role.MANAGER && employee.getSubordinates().size() >= MAX_MANAGER_SUBORDINATES;
     }
 
