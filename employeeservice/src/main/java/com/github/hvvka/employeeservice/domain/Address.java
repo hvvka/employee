@@ -1,7 +1,9 @@
 package com.github.hvvka.employeeservice.domain;
 
 import com.github.hvvka.employeeservice.domain.enumeration.AddressType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,9 +13,7 @@ import java.io.Serializable;
 @Table(name = "address")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,5 +26,4 @@ public class Address implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "address_type", nullable = false)
     private AddressType addressType;
-
 }

@@ -37,9 +37,10 @@ public class EmployeeRestController {
         return wrapOrNotFound(employeeDTO);
     }
 
-    @PutMapping("/employees")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    @PutMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         LOG.info("UPDATE Employee: {}", employeeDTO);
+        employeeDTO.setId(id);
         Optional<EmployeeDTO> updatedEmployee = employeeService.updateEmployee(employeeDTO);
         return wrapOrNotFound(updatedEmployee);
     }

@@ -90,7 +90,7 @@ class EmployeeRestControllerIT {
         employeeDTO.setLastName("!!");
 
         // when
-        mvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employee/{id}", employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk());
@@ -112,7 +112,7 @@ class EmployeeRestControllerIT {
         employeeDTO.setSupervisorId(3L);
 
         // when
-        mvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employee/{id}", employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -131,7 +131,7 @@ class EmployeeRestControllerIT {
         EmployeeDTO employeeDTO = new EmployeeDTO(employee);
 
         // when
-        mvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employee/{id}", employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -150,7 +150,7 @@ class EmployeeRestControllerIT {
         employeeDTO.setRole(Role.DIRECTOR);
 
         // when
-        mvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employee/{id}", employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -169,7 +169,7 @@ class EmployeeRestControllerIT {
         employeeDTO.setPesel("20051812345");
 
         // when
-        mvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employee/{id}", employee.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
