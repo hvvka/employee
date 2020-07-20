@@ -118,9 +118,27 @@ class EmployeeRestControllerIT {
                 .andExpect(status().isBadRequest());
 
         // then
-        List<Employee> employees = employeeRepository.findAll();
-        Employee testEmployee = employees.get(5);
+        Employee testEmployee = employeeRepository.getOne(6L);
         assertThat(testEmployee.getRole()).isEqualTo(Role.CEO);
+    }
+
+    @Test
+    @Transactional
+    public void shouldReturnBadRequestForInvalidEmployeeDTO() throws Exception {
+        // given
+        Employee employee = employeeRepository.getOne(6L);
+        employee.setPesel("invalid pesel");
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee);
+
+        // when
+        mvc.perform(put("/api/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(employeeDTO)))
+                .andExpect(status().isBadRequest());
+
+        // then
+        Employee testEmployee = employeeRepository.getOne(6L);
+        assertThat(testEmployee).isEqualTo(employee);
     }
 
     @Test
@@ -138,8 +156,7 @@ class EmployeeRestControllerIT {
                 .andExpect(status().isBadRequest());
 
         // then
-        List<Employee> employees = employeeRepository.findAll();
-        Employee testEmployee = employees.get(5);
+        Employee testEmployee = employeeRepository.getOne(6L);
         assertThat(testEmployee.getRole()).isEqualTo(Role.CEO);
     }
 
@@ -158,8 +175,7 @@ class EmployeeRestControllerIT {
                 .andExpect(status().isBadRequest());
 
         // then
-        List<Employee> employees = employeeRepository.findAll();
-        Employee testEmployee = employees.get(5);
+        Employee testEmployee = employeeRepository.getOne(6L);
         assertThat(testEmployee.getPesel()).isEqualTo("93020512345");
     }
 }

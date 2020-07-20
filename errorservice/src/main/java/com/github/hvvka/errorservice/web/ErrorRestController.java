@@ -17,6 +17,6 @@ public class ErrorRestController {
     @PostMapping("/exception")
     public ResponseEntity<String> postException(@RequestBody Exception exception) {
         LOG.error("POST Exception: {}", exception.getMessage());
-        return ResponseEntity.ok().body("exception received");
+        return ResponseEntity.ok().body("Exception received");
     }
 }

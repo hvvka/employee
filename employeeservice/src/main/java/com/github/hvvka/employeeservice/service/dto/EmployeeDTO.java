@@ -9,7 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -37,7 +40,6 @@ public class EmployeeDTO {
     @Size(min = 11, max = 11)
     private String pesel;
 
-    @NotBlank
     private Role role;
 
     private Set<Long> addresses;

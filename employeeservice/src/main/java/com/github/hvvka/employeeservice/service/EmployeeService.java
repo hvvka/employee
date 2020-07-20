@@ -11,7 +11,6 @@ import com.github.hvvka.employeeservice.service.error.TooManyEmployeesForManager
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -41,7 +40,7 @@ public class EmployeeService {
                 .map(EmployeeDTO::new);
     }
 
-    public Optional<EmployeeDTO> updateEmployee(@Valid EmployeeDTO employeeDTO) {
+    public Optional<EmployeeDTO> updateEmployee(EmployeeDTO employeeDTO) {
         return Optional.of(employeeRepository.findById(employeeDTO.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
