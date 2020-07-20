@@ -11,6 +11,7 @@ import com.github.hvvka.employeeservice.service.error.TooManyEmployeesForManager
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -40,17 +41,18 @@ public class EmployeeService {
                 .map(EmployeeDTO::new);
     }
 
-    public Optional<EmployeeDTO> updateEmployee(EmployeeDTO employeeDTO) {
+    public Optional<EmployeeDTO> updateEmployee(@Valid EmployeeDTO employeeDTO) {
         return Optional.of(employeeRepository.findById(employeeDTO.getId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(employee -> {
                     if (hasSupervisorTooManySubordinates(employee, employeeDTO.getRole())
-                            || hasNewManagerOfSubordinateDTOTooManySubordinates(employeeDTO)) {
+                            || hasNewManagerOfSubordinateDTOTooManySubordinates(employee, employeeDTO)) {
                         throw new TooManyEmployeesForManagerException(MAX_MANAGER_SUBORDINATES);
                     } else if (areThereTooManyDirectors(employeeDTO)) {
                         throw new TooManyDirectorsException(MAX_DIRECTORS);
-                    } else if (employeeRepository.existsByPesel(employeeDTO.getPesel())) {
+                    } else if (!employee.getPesel().equals(employeeDTO.getPesel())
+                            && employeeRepository.countAllByPesel(employeeDTO.getPesel()) >= 1) {
                         throw new PeselAlreadyPresentException();
                     }
                     return employee;
@@ -75,12 +77,15 @@ public class EmployeeService {
                 && employee.getSubordinates().size() > MAX_MANAGER_SUBORDINATES;
     }
 
-    private boolean hasNewManagerOfSubordinateDTOTooManySubordinates(EmployeeDTO employeeDTO) {
-        Optional<Long> optionalSupervisorId = employeeDTO.getOptionalSupervisorId();
-        if (optionalSupervisorId.isPresent()) {
-            Optional<Employee> optionalSupervisor = employeeRepository.findById(optionalSupervisorId.get());
+    private boolean hasNewManagerOfSubordinateDTOTooManySubordinates(Employee employee, EmployeeDTO employeeDTO) {
+        Optional<Employee> optionalOldSupervisor = employee.getSupervisor();
+        Optional<Long> optionalNewSupervisorId = employeeDTO.getOptionalSupervisorId();
+        if (optionalNewSupervisorId.isPresent()
+                && (optionalOldSupervisor.isEmpty()
+                || !optionalNewSupervisorId.get().equals(optionalOldSupervisor.get().getId()))) {
+            Optional<Employee> optionalSupervisor = employeeRepository.findById(optionalNewSupervisorId.get());
             return optionalSupervisor
-                    .filter(s -> s.getSubordinates().size() > MAX_MANAGER_SUBORDINATES)
+                    .filter(s -> s.getSubordinates().size() >= MAX_MANAGER_SUBORDINATES)
                     .isPresent();
         }
         return false;

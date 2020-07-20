@@ -10,5 +10,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Set<Employee> findAllByRoleIs(Role role);
 
-    boolean existsByPesel(String pesel);
+    int countAllByPesel(String pesel);
 }

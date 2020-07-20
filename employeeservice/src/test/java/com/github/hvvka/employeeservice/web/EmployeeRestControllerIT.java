@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +36,7 @@ class EmployeeRestControllerIT {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private MockMvc restUserMockMvc;
+    private MockMvc mvc;
 
     private Employee employee;
 
@@ -46,7 +45,7 @@ class EmployeeRestControllerIT {
     @BeforeEach
     public void setup() {
         EmployeeRestController employeeRestController = new EmployeeRestController(employeeService);
-        this.restUserMockMvc = MockMvcBuilders.standaloneSetup(employeeRestController).build();
+        this.mvc = MockMvcBuilders.standaloneSetup(employeeRestController).build();
         this.employee = new Employee();
         this.employee.setId(1L);
         this.employee.setFirstName("Ryan");
@@ -67,7 +66,7 @@ class EmployeeRestControllerIT {
         employeeRepository.saveAndFlush(employee);
 
         // expect
-        restUserMockMvc.perform(get("/api/employee/{id}", employee.getId()))
+        mvc.perform(get("/api/employee/{id}", employee.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1))
@@ -78,7 +77,7 @@ class EmployeeRestControllerIT {
                 .andExpect(jsonPath("$.role").value("DIRECTOR"))
                 .andExpect(jsonPath("$.addresses.[0]").value(1))
                 .andExpect(jsonPath("$.supervisorId").value(IsNull.nullValue()))
-                .andExpect(jsonPath("$.subordinateIds").value(2));
+                .andExpect(jsonPath("$.subordinateIds").isArray());
     }
 
     @Test
@@ -91,7 +90,7 @@ class EmployeeRestControllerIT {
         employeeDTO.setLastName("!!");
 
         // when
-        restUserMockMvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isOk());
@@ -108,12 +107,12 @@ class EmployeeRestControllerIT {
     @Transactional
     public void shouldReturnBadRequestWhenExceedsMaxSubordinatesForManager() throws Exception {
         // given
-        Optional<Employee> employee = employeeRepository.findById(6L);
-        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
-        employeeDTO.setRole(Role.EMPLOYEE);
+        Employee employee = employeeRepository.getOne(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee);
+        employeeDTO.setSupervisorId(3L);
 
         // when
-        restUserMockMvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -128,12 +127,12 @@ class EmployeeRestControllerIT {
     @Transactional
     public void shouldReturnBadRequestWhenExceedsMaxDirectors() throws Exception {
         // given
-        Optional<Employee> employee = employeeRepository.findById(6L);
-        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
+        Employee employee = employeeRepository.getOne(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee);
         employeeDTO.setRole(Role.DIRECTOR);
 
         // when
-        restUserMockMvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());
@@ -148,12 +147,12 @@ class EmployeeRestControllerIT {
     @Transactional
     public void shouldReturnBadRequestWhenPeselAlreadyExists() throws Exception {
         // given
-        Optional<Employee> employee = employeeRepository.findById(6L);
-        EmployeeDTO employeeDTO = new EmployeeDTO(employee.get());
+        Employee employee = employeeRepository.getOne(6L);
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee);
         employeeDTO.setPesel("20051812345");
 
         // when
-        restUserMockMvc.perform(put("/api/employees")
+        mvc.perform(put("/api/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(employeeDTO)))
                 .andExpect(status().isBadRequest());

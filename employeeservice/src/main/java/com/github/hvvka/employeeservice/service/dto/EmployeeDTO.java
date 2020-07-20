@@ -4,16 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.hvvka.employeeservice.domain.Address;
 import com.github.hvvka.employeeservice.domain.Employee;
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode
 public class EmployeeDTO {
 
     private Long id;
@@ -41,10 +46,6 @@ public class EmployeeDTO {
 
     private Set<Long> subordinateIds = new HashSet<>();
 
-    public EmployeeDTO() {
-        // for Jackson
-    }
-
     public EmployeeDTO(Employee employee) {
         this.id = employee.getId();
         this.firstName = employee.getFirstName();
@@ -63,81 +64,9 @@ public class EmployeeDTO {
                 .collect(Collectors.toSet()));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Set<Long> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(Set<Long> addresses) {
-        this.addresses = addresses;
-    }
-
     @JsonIgnore
     public Optional<Long> getOptionalSupervisorId() {
         return supervisorId == null ? Optional.empty() : Optional.of(supervisorId);
-    }
-
-    public Long getSupervisorId() {
-        return supervisorId;
-    }
-
-    public void setSupervisorId(Long supervisorId) {
-        this.supervisorId = supervisorId;
-    }
-
-    public Set<Long> getSubordinateIds() {
-        return subordinateIds;
-    }
-
-    public void setSubordinateIds(Set<Long> subordinateIds) {
-        this.subordinateIds = subordinateIds;
     }
 
     @Override
@@ -153,26 +82,5 @@ public class EmployeeDTO {
                 ", supervisorId=" + supervisorId +
                 ", subordinateIds=" + subordinateIds +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeDTO that = (EmployeeDTO) o;
-        return id.equals(that.id) &&
-                firstName.equals(that.firstName) &&
-                lastName.equals(that.lastName) &&
-                Objects.equals(age, that.age) &&
-                Objects.equals(pesel, that.pesel) &&
-                role == that.role &&
-                Objects.equals(addresses, that.addresses) &&
-                Objects.equals(supervisorId, that.supervisorId) &&
-                Objects.equals(subordinateIds, that.subordinateIds);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, age, pesel, role, addresses, supervisorId, subordinateIds);
     }
 }
