@@ -34,7 +34,7 @@ Nice to have:
 - [x] Travis CI
 - [x] tests
 - [] have H2 in-memory with dev profile / H2 file-based for prod
-- [] Lombok
+- [x] Lombok
 
 ## Documentation
 

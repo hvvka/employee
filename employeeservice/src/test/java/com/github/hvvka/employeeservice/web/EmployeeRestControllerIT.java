@@ -55,7 +55,7 @@ class EmployeeRestControllerIT {
         this.employee.setPesel("80111212345");
         this.employee.setRole(Role.DIRECTOR);
         this.employee.setAddresses(Set.of(
-                new Address().id(1L).addressType(AddressType.HOME)
+                new Address(1L, AddressType.HOME)
         ));
         this.employee.setSupervisor(null);
     }

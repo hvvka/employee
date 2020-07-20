@@ -1,6 +1,10 @@
 package com.github.hvvka.employeeservice.domain;
 
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -13,6 +17,10 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "employee")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,76 +65,8 @@ public class Employee implements Serializable {
     @OneToMany(mappedBy = "supervisor", fetch = FetchType.LAZY)
     private Set<Employee> subordinates = new HashSet<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Set<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(Set<Address> address) {
-        this.addresses = address;
-    }
-
     public Optional<Employee> getSupervisor() {
         return supervisor == null ? Optional.empty() : Optional.of(supervisor);
-    }
-
-    public void setSupervisor(Employee supervisor) {
-        this.supervisor = supervisor;
-    }
-
-    public Set<Employee> getSubordinates() {
-        return subordinates;
-    }
-
-    public void setSubordinates(Set<Employee> subordinates) {
-        this.subordinates = subordinates;
     }
 
     @Override

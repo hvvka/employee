@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.hvvka.employeeservice.domain.Address;
 import com.github.hvvka.employeeservice.domain.Employee;
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
+import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Data
 public class EmployeeDTO {
 
     private Long id;
