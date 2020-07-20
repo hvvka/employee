@@ -45,15 +45,7 @@ public class EmployeeService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(employee -> {
-                    if (hasSupervisorTooManySubordinates(employee, employeeDTO.getRole())
-                            || hasNewManagerOfSubordinateDTOTooManySubordinates(employee, employeeDTO)) {
-                        throw new TooManyEmployeesForManagerException(MAX_MANAGER_SUBORDINATES);
-                    } else if (areThereTooManyDirectors(employeeDTO)) {
-                        throw new TooManyDirectorsException(MAX_DIRECTORS);
-                    } else if (!employee.getPesel().equals(employeeDTO.getPesel())
-                            && employeeRepository.countAllByPesel(employeeDTO.getPesel()) >= 1) {
-                        throw new PeselAlreadyPresentException();
-                    }
+                    checkBusinessLogic(employeeDTO, employee);
                     return employee;
                 })
                 .map(e -> {
@@ -71,7 +63,19 @@ public class EmployeeService {
                 .map(EmployeeDTO::new);
     }
 
-    private boolean hasSupervisorTooManySubordinates(Employee employee, Role newRole) {
+    private void checkBusinessLogic(EmployeeDTO employeeDTO, Employee employee) {
+        if (hasManagerTooManySubordinates(employee, employeeDTO.getRole())
+                || hasNewManagerOfSubordinateDTOTooManySubordinates(employee, employeeDTO)) {
+            throw new TooManyEmployeesForManagerException(MAX_MANAGER_SUBORDINATES);
+        } else if (areThereTooManyDirectors(employeeDTO)) {
+            throw new TooManyDirectorsException(MAX_DIRECTORS);
+        } else if (!employee.getPesel().equals(employeeDTO.getPesel())
+                && employeeRepository.existsByPesel(employeeDTO.getPesel())) {
+            throw new PeselAlreadyPresentException();
+        }
+    }
+
+    private boolean hasManagerTooManySubordinates(Employee employee, Role newRole) {
         return (employee.getRole() != Role.MANAGER && newRole == Role.MANAGER)
                 && employee.getSubordinates().size() > MAX_MANAGER_SUBORDINATES;
     }
@@ -84,7 +88,8 @@ public class EmployeeService {
                 || !optionalNewSupervisorId.get().equals(optionalOldSupervisor.get().getId()))) {
             Optional<Employee> optionalSupervisor = employeeRepository.findById(optionalNewSupervisorId.get());
             return optionalSupervisor
-                    .filter(s -> s.getSubordinates().size() >= MAX_MANAGER_SUBORDINATES)
+                    .filter(s -> s.getRole() == Role.MANAGER
+                            && s.getSubordinates().size() >= MAX_MANAGER_SUBORDINATES)
                     .isPresent();
         }
         return false;
