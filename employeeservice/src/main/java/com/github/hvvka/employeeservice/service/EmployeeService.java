@@ -45,7 +45,8 @@ public class EmployeeService {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(employee -> {
-                    if (hasSupervisorTooManySubordinates(employee, employeeDTO.getRole())) {
+                    if (hasSupervisorTooManySubordinates(employee, employeeDTO.getRole())
+                            || hasNewManagerOfSubordinateDTOTooManySubordinates(employeeDTO)) {
                         throw new TooManyEmployeesForManagerException(MAX_MANAGER_SUBORDINATES);
                     } else if (areThereTooManyDirectors(employeeDTO)) {
                         throw new TooManyDirectorsException(MAX_DIRECTORS);
@@ -69,16 +70,30 @@ public class EmployeeService {
                 .map(EmployeeDTO::new);
     }
 
-    private boolean hasSupervisorTooManySubordinates(Employee employee, Role role) {
-        return role == Role.MANAGER && employee.getSubordinates().size() >= MAX_MANAGER_SUBORDINATES;
+    private boolean hasSupervisorTooManySubordinates(Employee employee, Role newRole) {
+        return (employee.getRole() != Role.MANAGER && newRole == Role.MANAGER)
+                && employee.getSubordinates().size() > MAX_MANAGER_SUBORDINATES;
+    }
+
+    private boolean hasNewManagerOfSubordinateDTOTooManySubordinates(EmployeeDTO employeeDTO) {
+        Optional<Long> optionalSupervisorId = employeeDTO.getOptionalSupervisorId();
+        if (optionalSupervisorId.isPresent()) {
+            Optional<Employee> optionalSupervisor = employeeRepository.findById(optionalSupervisorId.get());
+            return optionalSupervisor
+                    .filter(s -> s.getSubordinates().size() > MAX_MANAGER_SUBORDINATES)
+                    .isPresent();
+        }
+        return false;
     }
 
     private boolean areThereTooManyDirectors(EmployeeDTO employeeDTO) {
+        if (employeeDTO.getRole() != Role.DIRECTOR) {
+            return false;
+        }
         Set<Long> directorIds = employeeRepository.findAllByRoleIs(Role.DIRECTOR).stream()
                 .map(Employee::getId)
                 .collect(Collectors.toSet());
-        return employeeDTO.getRole() == Role.DIRECTOR
-                && !directorIds.contains(employeeDTO.getId())
+        return !directorIds.contains(employeeDTO.getId())
                 && directorIds.size() >= MAX_DIRECTORS;
     }
 }

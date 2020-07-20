@@ -5,11 +5,9 @@ import com.github.hvvka.employeeservice.domain.Address;
 import com.github.hvvka.employeeservice.domain.Employee;
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +26,7 @@ public class EmployeeDTO {
     @Max(125)
     private Integer age;
 
+    @Pattern(regexp = "[0-9]{11}")
     @Size(min = 11, max = 11)
     private String pesel;
 
@@ -152,5 +151,26 @@ public class EmployeeDTO {
                 ", supervisorId=" + supervisorId +
                 ", subordinateIds=" + subordinateIds +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDTO that = (EmployeeDTO) o;
+        return id.equals(that.id) &&
+                firstName.equals(that.firstName) &&
+                lastName.equals(that.lastName) &&
+                Objects.equals(age, that.age) &&
+                Objects.equals(pesel, that.pesel) &&
+                role == that.role &&
+                Objects.equals(addresses, that.addresses) &&
+                Objects.equals(supervisorId, that.supervisorId) &&
+                Objects.equals(subordinateIds, that.subordinateIds);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, age, pesel, role, addresses, supervisorId, subordinateIds);
     }
 }

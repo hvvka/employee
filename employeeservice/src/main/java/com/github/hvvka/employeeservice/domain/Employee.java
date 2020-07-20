@@ -3,10 +3,7 @@ package com.github.hvvka.employeeservice.domain;
 import com.github.hvvka.employeeservice.domain.enumeration.Role;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -38,6 +35,7 @@ public class Employee implements Serializable {
     @Max(125)
     private Integer age;
 
+    @Pattern(regexp = "[0-9]{11}")
     @Size(min = 11, max = 11)
     @Column(name = "pesel", length = 11, unique = true)
     private String pesel;
